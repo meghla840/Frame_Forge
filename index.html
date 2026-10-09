@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frame Forge</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#0d0d0d;--bg2:#121212;--bg3:#1f1f1f;--fg:#f5f5f5;--mut:#bdbdbd;--pn:rgba(255,255,255,.05);--bd:rgba(0,173,181,.35);--ac:#00ADB5;--inp:rgba(0,0,0,.45);--btn:linear-gradient(135deg,#00ADB5,#2fd0d8);--btnt:#0d0d0d;--alt:linear-gradient(135deg,#1c1c1c,#2e2e2e);--altt:#fff;--glow:rgba(0,173,181,.25);--sp:radial-gradient(circle at 25% 15%,#2c2c2c 0,#161616 45%,#0a0a0a 100%);--ttl:linear-gradient(90deg,#fff,#7ee8ee 55%,#00ADB5);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="min"]{--bg1:#F6EEE2;--bg2:#F5DDE6;--bg3:#DCCFF4;--fg:#2f2f36;--mut:#6b6b76;--pn:rgba(255,250,246,.78);--bd:rgba(90,90,102,.2);--ac:#8466cf;--inp:#FBF7F2;--btn:linear-gradient(135deg,#F3C6D8,#CBB7F0);--btnt:#2f2f36;--alt:linear-gradient(135deg,#6b6b76,#3f3f48);--altt:#fff;--glow:rgba(170,130,210,.3);--sp:radial-gradient(circle at 25% 15%,#F8F1E6 0,#F5DDE6 50%,#D6C8F2 100%);--ttl:linear-gradient(90deg,#3f3f48,#c0629a 55%,#8466cf)}
+:root[data-theme="earth"]{--bg1:#14141c;--bg2:#1A1A24;--bg3:#2b2b3b;--fg:#F4F4F6;--mut:#b4b4c4;--pn:rgba(255,255,255,.05);--bd:rgba(212,163,115,.32);--ac:#D4A373;--inp:rgba(0,0,0,.35);--btn:linear-gradient(135deg,#D4A373,#b7824f);--btnt:#1A1A24;--alt:linear-gradient(135deg,#2b2b3b,#1A1A24);--altt:#F4F4F6;--glow:rgba(212,163,115,.22);--sp:radial-gradient(circle at 25% 15%,#3a3a50 0,#1A1A24 55%,#101018 100%);--ttl:linear-gradient(90deg,#F4F4F6,#D4A373)}
+html{background:var(--bg1)}
+body{margin:0;min-height:100vh;color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:14px;background:linear-gradient(165deg,var(--bg1) 0%,var(--bg2) 55%,var(--bg3) 100%) fixed}
+.wrap{max-width:560px;margin:0 auto}
+h1{margin:6px 0 14px;font-size:26px;text-align:center;letter-spacing:.5px;background:var(--ttl);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{margin:0 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:1.4px;color:var(--ac)}
+canvas{width:100%;height:auto;border-radius:10px;display:block;background:#111;border:1px solid var(--bd);box-shadow:0 8px 30px var(--glow)}
+.panel{background:var(--pn);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-top:14px;display:grid;gap:10px}
+.how{margin:0;padding-left:18px;font-size:13px;line-height:1.55;color:var(--mut)}
+label{font-size:13px;color:var(--mut);display:grid;gap:4px}
+label.chk{display:flex;align-items:center;gap:8px}
+input,textarea{font:inherit;color:var(--fg);padding:9px;border:1px solid var(--bd);border-radius:8px;background:var(--inp);width:100%;box-sizing:border-box}
+input[type=color]{height:38px;padding:2px}
+input[type=checkbox]{width:auto;accent-color:var(--ac)}
+input[type=range]{padding:0;accent-color:var(--ac)}
+input[type=file]{font-size:13px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+button{font:inherit;font-weight:700;padding:13px;border:0;border-radius:10px;color:var(--btnt);background:var(--btn);box-shadow:0 4px 14px var(--glow)}
+button.alt{background:var(--alt);color:var(--altt);border:1px solid var(--bd)}
+button.th{background:transparent;color:var(--fg);border:1px solid var(--bd);box-shadow:none;font-size:12px;padding:10px 4px}
+button.th.on{border-color:var(--ac);color:var(--ac)}
+#st{font-size:13px;min-height:18px;color:var(--mut)}
+#splash{position:fixed;inset:0;z-index:50;display:grid;place-items:center;text-align:center;padding:28px;box-sizing:border-box;background:var(--sp);transition:opacity .7s,visibility .7s;cursor:pointer}
+#splash.hide{opacity:0;visibility:hidden}
+.sp-in{max-width:420px;animation:rise .9s both}
+.sp-e{display:flex;justify-content:center;animation:fly 1.3s cubic-bezier(.2,.8,.2,1) both}
+.plane{filter:drop-shadow(0 6px 10px rgba(23,105,170,.45));animation:bob 3s 1.3s ease-in-out infinite}
+#splash.go .sp-e{animation:takeoff .9s cubic-bezier(.5,0,.9,.4) forwards}
+#splash.go .plane{animation:none}
+#splash.go .sp-t,#splash.go #sp-m,#splash.go #sp-b{animation:none;opacity:0;transition:opacity .4s}
+@keyframes takeoff{0%{opacity:1;transform:none}100%{opacity:0;transform:translate(240px,-560px) scale(.45) rotate(8deg)}}
+@keyframes fly{0%{opacity:0;transform:translate(-140px,40px) rotate(-12deg)}50%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(5deg)}}
+.sp-t{margin:10px 0 14px;font-size:30px;line-height:1.2;background:var(--ttl);-webkit-background-clip:text;background-clip:text;color:transparent}
+#sp-m{font-size:17px;line-height:1.5;color:var(--fg);margin:0 0 22px;animation:rise 1.2s .3s both}
+#sp-b{padding:13px 28px;animation:rise 1.2s .6s both}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+.wrap{position:relative;z-index:1}
+.blob{position:fixed;z-index:0;pointer-events:none;border-radius:50%;filter:blur(70px);opacity:.28;background:var(--ac)}
+.b1{width:260px;height:260px;top:-60px;left:-80px;animation:drift1 14s ease-in-out infinite}
+.b2{width:300px;height:300px;bottom:-90px;right:-100px;animation:drift2 17s ease-in-out infinite;background:var(--bg3);opacity:.55}
+@keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(120px,160px)}}
+@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-140px,-120px)}}
+h1{background-size:220% 100%;animation:shimmer 6s linear infinite}
+@keyframes shimmer{0%{background-position:0% 0}100%{background-position:220% 0}}
+.rv{opacity:0;transform:translateY(26px) scale(.98);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+button{position:relative;overflow:hidden;transition:transform .18s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px)}
+button:active{transform:scale(.96)}
+button:not(.th)::after{content:"";position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-160%) skewX(-20deg);animation:shine 3.8s ease-in-out infinite}
+@keyframes shine{0%,55%{transform:translateX(-160%) skewX(-20deg)}100%{transform:translateX(380%) skewX(-20deg)}}
+.panel{transition:border-color .3s,transform .3s}
+.panel:hover{border-color:var(--ac)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style></head><body>
+<div class="blob b1"></div><div class="blob b2"></div>
+<div id="splash"><div class="sp-in"><div class="sp-e"><svg class="plane" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1769AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div><div class="sp-t">Welcome to Rafsan's Studio</div><p id="sp-m"></p><button id="sp-b" type="button">Let's create</button></div></div>
+<div class="wrap">
+<h1>Frame Forge</h1>
+<canvas id="c" width="1080" height="1350"></canvas>
+<div class="panel">
+<h2>Website theme</h2>
+<div class="row3"><button class="th" data-t="cine" type="button">Dark Cinematic</button><button class="th" data-t="min" type="button">Minimal Clean</button><button class="th" data-t="earth" type="button">Creative Earthy</button></div>
+</div>
+
+<div class="panel">
+<h2>Headline</h2>
+<label>Headline text
+<textarea id="head" rows="3">ঢাকার ৯৮ বাস রুট কমে হবে ৩২, চালু হবে *'এক রুট, এক কোম্পানি'* মডেল</textarea></label>
+<div class="row">
+<label>Date<input id="date" value="06 October 2026"></label>
+<label>Text logo (used if no logo image)<input id="brand" value="METAFEE."></label>
+</div>
+<div class="row">
+<label>Heading gradient: start<input type="color" id="accent" value="#8f0010"></label>
+<label>Heading gradient: end<input type="color" id="accent2" value="#e0202f"></label>
+<label>Header background: start<input type="color" id="bgc" value="#141414"></label>
+<label>Header background: end<input type="color" id="bgc2" value="#4a0a14"></label>
+</div>
+<label>Shadow over the image<input type="range" id="shd" min="0" max="100" value="45"></label>
+</div>
+
+<div class="panel">
+<h2>Top logo</h2>
+<label>Logo image<input type="file" id="logo" accept="image/*"></label>
+<label>Top logo size<input type="range" id="k1" min="20" max="250" value="100"></label>
+<label class="chk"><input type="checkbox" id="rm" checked> Remove logo background</label>
+<label>Background removal strength<input type="range" id="tol" min="10" max="120" value="45"></label>
+</div>
+
+<div class="panel">
+<h2>Middle image / video</h2>
+<label>Image or video<input type="file" id="media" accept="image/*,video/*"></label>
+<label class="chk"><input type="checkbox" id="full" checked> Show the full image/video (no cropping)</label>
+<label class="chk"><input type="checkbox" id="snd" checked> Video sound (preview)</label>
+<button id="pp" class="alt" type="button">Play / Pause video</button>
+</div>
+
+<div class="panel">
+<h2>Footer</h2>
+<label>Left logo<input type="file" id="foot" accept="image/*"></label>
+<label>Left logo size<input type="range" id="k2" min="20" max="250" value="100"></label>
+<label>Right logo (optional)<input type="file" id="foot2" accept="image/*"></label>
+<label>Right logo size<input type="range" id="k3" min="20" max="250" value="100"></label>
+<div class="row">
+<label>Center text<input id="fmid" value=""></label>
+<label>Right text (if no right logo)<input id="ftext" value="www.metafee.com"></label>
+</div>
+<label>Footer color<input type="color" id="fbg" value="#3a3a3a"></label>
+</div>
+
+<div class="panel">
+<h2>Download</h2>
+<button id="dlimg">Download image (PNG)</button>
+<button id="dlvid" class="alt">Download video (MP4)</button>
+<div id="st"></div>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/mp4box@0.5.2/dist/mp4box.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.js"></script>
+<script>
+const W=1080,H=1350,cv=document.getElementById('c');let x=cv.getContext('2d');const mainX=x;let dirty=true;
+const $=id=>document.getElementById(id);
+let vidFile=null,ov=null,logoImg=null,footImg=null,foot2Img=null,mImg=null,vid=null,recording=false;
+let actx=null,dst=null,mon=null;
+function setupAudio(v){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();dst=actx.createMediaStreamDestination();
+ const src=actx.createMediaElementSource(v);mon=actx.createGain();mon.gain.value=$('snd').checked?1:0;src.connect(dst);src.connect(mon);mon.connect(actx.destination);actx.resume()}catch(e){dst=null}}
+function loadImg(file,cb){const i=new Image();i.onload=()=>{cb(i);dirty=true};i.src=URL.createObjectURL(file)}
+$('logo').onchange=e=>e.target.files[0]&&loadImg(e.target.files[0],i=>{logoImg=i});
+$('foot2').onchange=e=>e.target.files[0]&&loadImg(e.target.files[0],i=>{foot2Img=i});
+$('foot').onchange=e=>e.target.files[0]&&loadImg(e.target.files[0],i=>{footImg=i});
+$('media').onchange=e=>{const f=e.target.files[0];if(!f)return;
+ if(vid){vid.pause();vid=null}mImg=null;
+ if(f.type.startsWith('video')){vidFile=f;const v=document.createElement('video');v.src=URL.createObjectURL(f);v.loop=true;v.playsInline=true;v.preload='auto';v.onloadeddata=()=>{vid=v;setupAudio(v);v.play().catch(()=>{$('st').textContent='Tap Play / Pause to start the video'})};}
+ else loadImg(f,i=>{mImg=i});};
+function cover(src,sw,sh,dx,dy,dw,dh){const s=Math.max(dw/sw,dh/sh),w=sw*s,h=sh*s;
+ x.save();x.beginPath();x.rect(dx,dy,dw,dh);x.clip();x.drawImage(src,dx+(dw-w)/2,dy+(dh-h)/2,w,h);x.restore();}
+function words(t,accent){const out=[];let hi=false;
+ t.split(/(\*)/).forEach(p=>{if(p==='*'){hi=!hi;return}p.split(/\s+/).filter(Boolean).forEach(w=>out.push({w,c:hi?'G':'#fff'}))});return out;}
+function headline(){const ws=words($('head').value,$('accent').value);
+ const top=185,bot=430,maxW=W-120;
+ for(let fs=76;fs>=34;fs-=2){x.font=`700 ${fs}px "Hind Siliguri",sans-serif`;
+  const sp=x.measureText(' ').width,lines=[];let cur=[],cw=0;
+  ws.forEach(o=>{const w=x.measureText(o.w).width;if(cur.length&&cw+sp+w>maxW){lines.push({a:cur,w:cw});cur=[];cw=0}
+   cur.push({...o,mw:w});cw+=(cur.length>1?sp:0)+w});
+  if(cur.length)lines.push({a:cur,w:cw});
+  const lh=fs*1.3;
+  if(lines.length*lh<=bot-top||fs<=34){
+   let y=top+((bot-top)-lines.length*lh)/2+fs;
+   lines.forEach(l=>{let px=(W-l.w)/2;l.a.forEach(o=>{if(o.c==='G'){const gr=x.createLinearGradient(px,y-fs,px+o.mw,y);gr.addColorStop(0,$('accent').value);gr.addColorStop(1,$('accent2').value);x.fillStyle=gr}else x.fillStyle=o.c;x.textAlign='left';x.fillText(o.w,px,y);px+=o.mw+sp});y+=lh});
+   return;}}}
+const cache=new WeakMap();
+function prep(img){if(!$('rm').checked)return img;const tol=+$('tol').value,c=cache.get(img);if(c&&c.tol===tol)return c.cv;
+ const k=Math.min(1,900/img.width),cw=Math.round(img.width*k),ch=Math.round(img.height*k),cc=document.createElement('canvas');cc.width=cw;cc.height=ch;
+ const g=cc.getContext('2d');g.drawImage(img,0,0,cw,ch);const d=g.getImageData(0,0,cw,ch),p=d.data;
+ const r0=p[0],g0=p[1],b0=p[2];
+ for(let i=0;i<p.length;i+=4){const dd=Math.hypot(p[i]-r0,p[i+1]-g0,p[i+2]-b0);
+  if(dd<tol)p[i+3]=0;else if(dd<tol*1.7)p[i+3]=p[i+3]*(dd-tol)/(tol*0.7);}
+ let x0=cw,y0=ch,x1=0,y1=0;
+ for(let yy=0;yy<ch;yy++)for(let xx=0;xx<cw;xx++)if(p[(yy*cw+xx)*4+3]>25){if(xx<x0)x0=xx;if(xx>x1)x1=xx;if(yy<y0)y0=yy;if(yy>y1)y1=yy}
+ g.putImageData(d,0,0);let out=cc;
+ if(x1>x0&&y1>y0){out=document.createElement('canvas');out.width=x1-x0+1;out.height=y1-y0+1;out.getContext('2d').drawImage(cc,x0,y0,out.width,out.height,0,0,out.width,out.height)}
+ cache.set(img,{tol,cv:out});return out;}
+function fit(img,mw,mh){const s=prep(img),r=Math.min(mw/s.width,mh/s.height);return{s,w:s.width*r,h:s.height*r}}
+const bc=document.createElement('canvas');bc.width=36;bc.height=48;const bx=bc.getContext('2d');
+function media(src,sw,sh,my,mh){
+ if(!$('full').checked){cover(src,sw,sh,0,my,W,mh);return}
+ const k=Math.max(bc.width/sw,bc.height/sh);bx.drawImage(src,(bc.width-sw*k)/2,(bc.height-sh*k)/2,sw*k,sh*k);
+ x.imageSmoothingEnabled=true;x.drawImage(bc,0,my,W,mh);x.fillStyle='rgba(0,0,0,.45)';x.fillRect(0,my,W,mh);
+ const r=Math.min(W/sw,mh/sh),w=sw*r,h=sh*r;x.drawImage(src,(W-w)/2,my+(mh-h)/2,w,h);}
+const sc=document.createElement('canvas');sc.width=W;sc.height=H;const sx=sc.getContext('2d'),MY=515,MH=720;
+function renderStatic(){x=sx;try{
+ {const g=x.createLinearGradient(0,0,W,515);g.addColorStop(0,$('bgc').value);g.addColorStop(1,$('bgc2').value);x.fillStyle=g;x.fillRect(0,0,W,H)}
+ // logo
+ if(logoImg){const f=fit(logoImg,640*$('k1').value/100,115*$('k1').value/100);x.drawImage(f.s,(W-f.w)/2,85-f.h/2,f.w,f.h)}
+ else{x.font='700 64px "Hind Siliguri",sans-serif';x.fillStyle='#fff';x.textAlign='center';x.fillText($('brand').value,W/2,110)}
+ x.fillStyle=$('accent').value;x.fillRect(120,160,W-240,3);
+ headline();
+ x.fillStyle=$('accent').value;x.fillRect(120,450,W-240,3);
+ x.font='500 26px "Hind Siliguri",sans-serif';x.fillStyle='#ddd';x.textAlign='center';x.fillText($('date').value,W/2,492);
+x.fillStyle='#111';x.fillRect(0,MY,W,MH);
+ // footer
+ const fy=1235,fh=H-fy;
+ x.fillStyle=$('fbg').value;x.fillRect(0,fy,W,fh);const cy=fy+fh/2;
+ let lw=0,rw=0;
+ if(footImg){const f=fit(footImg,420*$('k2').value/100,Math.min(108,76*$('k2').value/100));lw=f.w;x.drawImage(f.s,30,cy-f.h/2,f.w,f.h)}
+ if(foot2Img){const f=fit(foot2Img,420*$('k3').value/100,Math.min(108,76*$('k3').value/100));rw=f.w;x.drawImage(f.s,W-30-f.w,cy-f.h/2,f.w,f.h)}
+ else{x.fillStyle='#fff';x.font='700 38px "Hind Siliguri",sans-serif';x.textAlign='right';x.fillText($('ftext').value,W-30,cy+13);rw=x.measureText($('ftext').value).width}
+ const mt=$('fmid').value.trim();
+ if(mt){const av=2*Math.min(W/2-(30+lw),W/2-(30+rw))-30;let fs=40;x.fillStyle='#fff';x.textAlign='center';do{x.font=`700 ${fs}px "Hind Siliguri",sans-serif`;fs-=2}while(x.measureText(mt).width>av&&fs>16);x.fillText(mt,W/2,cy+fs/3+8)}
+}finally{x=mainX}}
+function draw(){
+ if(dirty){renderStatic();dirty=false}
+ const my=MY,mh=MH;x.drawImage(sc,0,0);
+ if(ov)media(ov.s,ov.w,ov.h,my,mh);
+ else if(vid&&vid.videoWidth)media(vid,vid.videoWidth,vid.videoHeight,my,mh);
+ else if(mImg)media(mImg,mImg.width,mImg.height,my,mh);
+ else{x.fillStyle='#777';x.font='500 36px "Hind Siliguri",sans-serif';x.textAlign='center';x.fillText('Add an image or video',W/2,my+mh/2)}
+ {const a=$('shd').value/100*0.75,gs=x.createLinearGradient(0,my,0,my+170);gs.addColorStop(0,`rgba(0,0,0,${a})`);gs.addColorStop(.5,`rgba(0,0,0,${a*0.35})`);gs.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gs;x.fillRect(0,my,W,170)}
+}
+['input','change'].forEach(ev=>document.addEventListener(ev,()=>{dirty=true}));
+function loop(){draw();requestAnimationFrame(loop)}
+Promise.all([document.fonts.load('700 40px "Hind Siliguri"','ঢাকা'),document.fonts.load('500 26px "Hind Siliguri"','ঢাকা')]).catch(()=>{}).then(()=>{dirty=true;loop()});
+$('snd').onchange=()=>{if(mon)mon.gain.value=$('snd').checked?1:0};
+$('pp').onclick=()=>{if(!vid)return;actx&&actx.resume();vid.paused?vid.play():vid.pause()};
+function save(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove()}
+$('dlimg').onclick=()=>{draw();cv.toBlob(b=>save(b,'metafee-card.png'),'image/png')};
+function realExport(){
+ if(!vid){$('st').textContent='Add a video first.';return}
+ if(recording||!window.MediaRecorder){$('st').textContent=recording?'Recording in progress…':'Video export is not supported in this browser.';return}
+ const types=['video/mp4','video/webm;codecs=vp9,opus','video/webm'],mt=types.find(t=>MediaRecorder.isTypeSupported(t))||'';
+ const st=cv.captureStream(30);if(dst)dst.stream.getAudioTracks().forEach(t=>st.addTrack(t));if(actx)actx.resume();
+ const rec=new MediaRecorder(st,mt?{mimeType:mt,videoBitsPerSecond:6e6}:{}),chunks=[];
+ rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+ rec.onstop=()=>{recording=false;vid.loop=true;vid.play();const ext=(mt.includes('mp4'))?'mp4':'webm';save(new Blob(chunks,{type:mt||'video/webm'}),'metafee-card.'+ext);$('st').textContent='Video ready ✓'};
+ vid.loop=false;vid.currentTime=0;recording=true;$('st').textContent='Creating video… please wait until it finishes';
+ vid.onended=()=>{vid.onended=null;setTimeout(()=>rec.stop(),150)};
+ vid.play().then(()=>rec.start());
+}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function fastExport(file){
+ const buf=await file.arrayBuffer(),mp=MP4Box.createFile();buf.fileStart=0;
+ const info=await new Promise((ok,no)=>{mp.onReady=ok;mp.onError=no;mp.appendBuffer(buf);mp.flush()});
+ const vt=info.videoTracks[0];if(!vt)throw new Error('no video');const total=vt.nb_samples;
+ const m=vt.matrix||[],rot=(m[0]===0&&m[1]===65536)?90:(m[0]===0&&m[1]===-65536)?270:(m[0]===-65536&&m[3]===0)?180:0;
+ let ab=null,sr=0,ch=0;
+ if(info.audioTracks.length&&window.AudioEncoder){try{const ac=new (window.AudioContext||window.webkitAudioContext)();ab=await ac.decodeAudioData(buf.slice(0));ac.close();sr=ab.sampleRate;ch=Math.min(2,ab.numberOfChannels)}catch(e){ab=null}}
+ const mux=new Mp4Muxer.Muxer({target:new Mp4Muxer.ArrayBufferTarget(),video:{codec:'avc',width:W,height:H},...(ab?{audio:{codec:'aac',sampleRate:sr,numberOfChannels:ch}}:{}),fastStart:'in-memory',firstTimestampBehavior:'offset'});
+ let err=null;
+ if(ab){const ae=new AudioEncoder({output:(c,md)=>mux.addAudioChunk(c,md),error:e=>{err=e}});
+  ae.configure({codec:'mp4a.40.2',sampleRate:sr,numberOfChannels:ch,bitrate:128000});
+  for(let o=0;o<ab.length;o+=4096){const n=Math.min(4096,ab.length-o),d=new Float32Array(n*ch);
+   for(let c=0;c<ch;c++)d.set(ab.getChannelData(c).subarray(o,o+n),c*n);
+   const ad=new AudioData({format:'f32-planar',sampleRate:sr,numberOfFrames:n,numberOfChannels:ch,timestamp:Math.round(o/sr*1e6),data:d});ae.encode(ad);ad.close();
+   if(ae.encodeQueueSize>40)await sleep(2)}
+  await ae.flush();if(err)throw err}
+ const ve=new VideoEncoder({output:(c,md)=>mux.addVideoChunk(c,md),error:e=>{err=e}});
+ ve.configure({codec:'avc1.640034',width:W,height:H,bitrate:6e6,framerate:30});
+ const rc=document.createElement('canvas'),rx=rc.getContext('2d');let n=0;
+ const dec=new VideoDecoder({error:e=>{err=e},output:f=>{
+  const w=f.displayWidth,h=f.displayHeight;let s=f,sw=w,sh=h;
+  if(rot){sw=rot===180?w:h;sh=rot===180?h:w;rc.width=sw;rc.height=sh;rx.save();rx.translate(sw/2,sh/2);rx.rotate(rot*Math.PI/180);rx.drawImage(f,-w/2,-h/2);rx.restore();s=rc}
+  ov={s,w:sw,h:sh};draw();ov=null;
+  const nf=new VideoFrame(cv,{timestamp:f.timestamp,duration:f.duration||undefined});
+  ve.encode(nf,{keyFrame:n%90===0});nf.close();f.close();n++;
+  $('st').textContent='Fast mode: rendering… '+Math.min(99,Math.round(n/total*100))+'%';}});
+ const trak=mp.getTrackById(vt.id);let dsc=null;const DS=window.DataStream||MP4Box.DataStream;
+ for(const e of trak.mdia.minf.stbl.stsd.entries){const b=e.avcC||e.hvcC||e.vpcC||e.av1C;if(b){const ds=new DS(undefined,0,DS.BIG_ENDIAN);b.write(ds);dsc=new Uint8Array(ds.buffer,8);break}}
+ const cfg={codec:vt.codec,codedWidth:vt.video.width,codedHeight:vt.video.height,description:dsc};
+ const sup=await VideoDecoder.isConfigSupported(cfg);if(!sup.supported)throw new Error('decoder unsupported');
+ dec.configure(cfg);
+ let got=0,feed=Promise.resolve(),fin;const done=new Promise(r=>fin=r);
+ mp.onSamples=(id,u,sm)=>{got+=sm.length;feed=feed.then(async()=>{for(const q of sm){
+   while((dec.decodeQueueSize>8||ve.encodeQueueSize>8)&&!err)await sleep(3);
+   if(err)return;
+   dec.decode(new EncodedVideoChunk({type:q.is_sync?'key':'delta',timestamp:1e6*q.cts/q.timescale,duration:1e6*q.duration/q.timescale,data:q.data}))}
+  if(got>=total)fin()})};
+ mp.setExtractionOptions(vt.id,null,{nbSamples:30});mp.start();
+ await done;await feed;await dec.flush();await ve.flush();if(err)throw err;
+ mux.finalize();save(new Blob([mux.target.buffer],{type:'video/mp4'}),'metafee-card.mp4');
+}
+$('dlvid').onclick=async()=>{
+ if(!vid){$('st').textContent='Add a video first.';return}
+ if(recording)return;
+ const ok=window.VideoDecoder&&window.VideoEncoder&&window.AudioData&&window.MP4Box&&window.Mp4Muxer&&vidFile&&/\.(mp4|mov|m4v)$/i.test(vidFile.name);
+ if(ok){recording=true;vid.pause();
+  try{await fastExport(vidFile);ov=null;recording=false;vid.play().catch(()=>{});$('st').textContent='Video ready ✓ (fast mode)';return}
+  catch(e){console.error(e);ov=null;recording=false;$('st').textContent='Fast mode unavailable, switching to normal mode…'}}
+ realExport();
+};
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);document.querySelectorAll('.th').forEach(b=>b.classList.toggle('on',b.dataset.t===t));try{localStorage.setItem('theme',t)}catch(e){}}
+document.querySelectorAll('.th').forEach(b=>b.onclick=()=>setTheme(b.dataset.t));
+let th='cine';try{th=localStorage.getItem('theme')||'cine'}catch(e){}setTheme(th);
+const rvEls=[...document.querySelectorAll('h1,canvas,.panel')];
+rvEls.forEach((e,i)=>{e.classList.add('rv');e.style.transitionDelay=(i%3)*90+'ms'});
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}}),{threshold:.08});
+ requestAnimationFrame(()=>rvEls.forEach(e=>io.observe(e)))}else rvEls.forEach(e=>e.classList.add('in'));
+setTimeout(()=>rvEls.forEach(e=>e.classList.add('in')),4000);
+const MSG=["Great design starts with one bold idea. Go make yours.","Small steps every day build something unstoppable.","Your story deserves to be seen. Let's make it shine.","Create something today your future self will be proud of.","Consistency beats talent. Keep showing up and keep creating."];
+$('sp-m').textContent=MSG[Math.floor(Math.random()*MSG.length)];
+const sp=$('splash');let going=false;const hideSp=()=>{if(going)return;going=true;sp.classList.add('go');setTimeout(()=>sp.classList.add('hide'),650)};sp.onclick=hideSp;setTimeout(hideSp,5000);
+</script></body></html>
