@@ -140,6 +140,13 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 <h2>Headline</h2>
 <label>Headline text
 <textarea id="head" rows="3">ঢাকার ৯৮ বাস রুট কমে হবে ৩২, চালু হবে *'এক রুট, এক কোম্পানি'* মডেল</textarea></label>
+<div class="row">
+<label>Source label<input id="slabel" value="Source:"></label>
+<label>Source (page name or anything)<input id="src" value=""></label>
+<label>Logo position<select id="lpos"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select></label>
+<label>Source position<select id="spos"><option value="opp">Opposite of logo</option><option value="left">Left</option><option value="right">Right</option></select></label>
+</div>
+<label>Source size<input type="range" id="ssz" min="16" max="40" value="24"></label>
 <label class="chk"><input type="checkbox" id="adate" checked> Auto date (today)</label>
 <div class="row">
 <label>Date<input id="date" value="06 October 2026"></label>
@@ -313,14 +320,28 @@ function softGrid(c,y0,y1,a,col,mode){
   g.addColorStop(0,`rgba(${col},${A})`);g.addColorStop(.4,`rgba(${col},0)`);g.addColorStop(.6,`rgba(${col},0)`);g.addColorStop(1,`rgba(${col},${A})`);
   c.strokeStyle=g;c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke()}
  c.restore()}
+function lx(w){const p=$('lpos').value;return p==='left'?50+w/2:p==='right'?W-50-w/2:W/2}
+function drawSource(cy,col){
+ const txt=$('src').value.trim();if(!txt)return;
+ const lab=$('slabel').value.trim();let fs=+$('ssz').value,w;
+ x.textAlign='left';
+ do{x.font='600 '+fs+'px '+FF();w=x.measureText((lab?lab+' ':'')+txt).width;fs-=2}while(w>W*.36&&fs>12);fs+=2;
+ const lp=$('lpos').value,sp=$('spos').value,side=sp==='opp'?(lp==='right'?'left':'right'):sp,pad=16,h=fs*1.9;
+ const px=side==='right'?W-50-(w+pad*2):50,py=cy-h/2+2;
+ const light=DESIGNS[design].layout==='frame'&&lightBg($('bgc').value);
+ x.fillStyle=light?'rgba(0,0,0,.08)':'rgba(255,255,255,.14)';x.beginPath();x.roundRect?x.roundRect(px,py,w+pad*2,h,h/2):x.rect(px,py,w+pad*2,h);x.fill();
+ x.fillStyle=col;const base=cy+fs*.35+2;let tx=px+pad;
+ if(lab){x.globalAlpha=.7;x.fillText(lab+' ',tx,base);x.globalAlpha=1;tx+=x.measureText(lab+' ').width}
+ x.fillText(txt,tx,base)}
 function drawLogo(cy,hmax,chip,txtCol){
  const k=$('k1').value/100;
- if(logoImg){const f=fit(logoImg,640*k,hmax*k);
-  if(chip){x.fillStyle='#2a2730';x.beginPath();x.roundRect?x.roundRect(W/2-f.w/2-34,cy-f.h/2-16,f.w+68,f.h+32,30):x.rect(W/2-f.w/2-34,cy-f.h/2-16,f.w+68,f.h+32);x.fill()}
-  x.drawImage(f.s,(W-f.w)/2,cy-f.h/2,f.w,f.h)}
- else{x.font='700 64px '+FF();x.textAlign='center';const tw=x.measureText($('brand').value).width;
-  if(chip){x.fillStyle='#2a2730';x.beginPath();x.roundRect?x.roundRect(W/2-tw/2-34,cy-52,tw+68,90,30):x.rect(W/2-tw/2-34,cy-52,tw+68,90);x.fill()}
-  x.fillStyle=chip?'#fff':txtCol;x.fillText($('brand').value,W/2,cy+22)}}
+ if(logoImg){const f=fit(logoImg,640*k,hmax*k),c=lx(f.w);
+  if(chip){x.fillStyle='#2a2730';x.beginPath();x.roundRect?x.roundRect(c-f.w/2-34,cy-f.h/2-16,f.w+68,f.h+32,30):x.rect(c-f.w/2-34,cy-f.h/2-16,f.w+68,f.h+32);x.fill()}
+  x.drawImage(f.s,c-f.w/2,cy-f.h/2,f.w,f.h)}
+ else{x.font='700 64px '+FF();x.textAlign='center';const tw=x.measureText($('brand').value).width,c=lx(tw);
+  if(chip){x.fillStyle='#2a2730';x.beginPath();x.roundRect?x.roundRect(c-tw/2-34,cy-52,tw+68,90,30):x.rect(c-tw/2-34,cy-52,tw+68,90);x.fill()}
+  x.fillStyle=chip?'#fff':txtCol;x.fillText($('brand').value,c,cy+22)}
+ drawSource(cy,chip&&DESIGNS[design].layout==='frame'?txtCol:txtCol)}
 function drawFooter(){
  const fy=1235,fh=H-fy;
  x.fillStyle=$('fbg').value;x.fillRect(0,fy,W,fh);const cy=fy+fh/2;
@@ -423,7 +444,10 @@ function loop(){watchSegs();draw();requestAnimationFrame(loop)}
 Promise.all([document.fonts.load('700 40px "Hind Siliguri"','ঢাকা'),document.fonts.load('500 26px "Hind Siliguri"','ঢাকা')]).catch(()=>{}).then(()=>{dirty=true;loop()});
 $('snd').onchange=()=>{if(mon)mon.gain.value=$('snd').checked?1:0};
 $('pp').onclick=()=>{if(!vid)return;actx&&actx.resume();vid.paused?vid.play():vid.pause()};
-function save(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove()}
+async function save(blob,name){
+ if(window.parent!==window){parent.postMessage({mf:'save',name,blob},'*');return}
+ try{const dl=window.claude&&await window.claude.use('downloads');if(dl){await dl.save({filename:name,data:blob});return}}catch(e){if(e&&e.code==='declined')return}
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove()}
 $('dlimg').onclick=()=>{draw();cv.toBlob(b=>save(b,'metafee-card.png'),'image/png')};
 function realExport(){
  if(!vid){$('st').textContent='Add a video first.';return}
