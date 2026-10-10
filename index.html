@@ -2,7 +2,10 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Frame Forge</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@500;700&family=Baloo+Da+2:wght@500;700&family=Hind+Siliguri:wght@500;700&family=Noto+Sans+Bengali:wght@500;700&family=Noto+Serif+Bengali:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atma:wght@500;700&family=Galada&family=Mina:wght@400;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@500;700&family=Poppins:wght@500;700&family=Inter:wght@500;700&family=Lato:wght@400;700&family=Raleway:wght@500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Merriweather:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 :root{--bg1:#0d0d0d;--bg2:#121212;--bg3:#1f1f1f;--fg:#f5f5f5;--mut:#bdbdbd;--pn:rgba(255,255,255,.05);--bd:rgba(0,173,181,.35);--ac:#00ADB5;--inp:rgba(0,0,0,.45);--btn:linear-gradient(135deg,#00ADB5,#2fd0d8);--btnt:#0d0d0d;--alt:linear-gradient(135deg,#1c1c1c,#2e2e2e);--altt:#fff;--glow:rgba(0,173,181,.25);--sp:radial-gradient(circle at 25% 15%,#2c2c2c 0,#161616 45%,#0a0a0a 100%);--ttl:linear-gradient(90deg,#fff,#7ee8ee 55%,#00ADB5);
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -18,7 +21,7 @@ canvas{width:100%;height:auto;border-radius:10px;display:block;background:#111;b
 .how{margin:0;padding-left:18px;font-size:13px;line-height:1.55;color:var(--mut)}
 label{font-size:13px;color:var(--mut);display:grid;gap:4px}
 label.chk{display:flex;align-items:center;gap:8px}
-input,textarea{font:inherit;color:var(--fg);padding:9px;border:1px solid var(--bd);border-radius:8px;background:var(--inp);width:100%;box-sizing:border-box}
+input,textarea,select{font:inherit;color:var(--fg);padding:9px;border:1px solid var(--bd);border-radius:8px;background:var(--inp);width:100%;box-sizing:border-box}
 input[type=color]{height:38px;padding:2px}
 input[type=checkbox]{width:auto;accent-color:var(--ac)}
 input[type=range]{padding:0;accent-color:var(--ac)}
@@ -118,6 +121,14 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 </div>
 
 <div class="panel">
+<h2>Fonts</h2>
+<div class="row">
+<label>Bangla font<select id="fbn"><option value="Hind Siliguri">Hind Siliguri</option><option value="Noto Sans Bengali">Noto Sans Bengali</option><option value="Noto Serif Bengali">Noto Serif Bengali</option><option value="Anek Bangla">Anek Bangla</option><option value="Baloo Da 2">Baloo Da 2</option><option value="Tiro Bangla">Tiro Bangla</option><option value="Galada">Galada</option><option value="Atma">Atma</option><option value="Mina">Mina</option></select></label>
+<label>English font<select id="fen"><option value="Hind Siliguri">Hind Siliguri</option><option value="Montserrat">Montserrat</option><option value="Roboto">Roboto</option><option value="Poppins">Poppins</option><option value="Inter">Inter</option><option value="Lato">Lato</option><option value="Raleway">Raleway</option><option value="Oswald">Oswald</option><option value="Playfair Display">Playfair Display</option><option value="Merriweather">Merriweather</option><option value="Bebas Neue">Bebas Neue</option></select></label>
+</div>
+</div>
+
+<div class="panel">
 <h2>Headline</h2>
 <label>Headline text
 <textarea id="head" rows="3">ঢাকার ৯৮ বাস রুট কমে হবে ৩২, চালু হবে *'এক রুট, এক কোম্পানি'* মডেল</textarea></label>
@@ -185,6 +196,7 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 <script src="https://cdn.jsdelivr.net/npm/mp4box@0.5.2/dist/mp4box.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.js"></script>
 <script>
+const FF=()=>`"${$('fen').value}","${$('fbn').value}",sans-serif`;
 const W=1080,H=1350,cv=document.getElementById('c');let x=cv.getContext('2d');const mainX=x;let dirty=true;
 const $=id=>document.getElementById(id);
 let vidFile=null,ov=null,logoImg=null,footImg=null,foot2Img=null,mImg=null,vid=null,recording=false;
@@ -205,7 +217,7 @@ function words(t,accent){const out=[];let hi=false;
  t.split(/(\*)/).forEach(p=>{if(p==='*'){hi=!hi;return}p.split(/\s+/).filter(Boolean).forEach(w=>out.push({w,c:hi?'G':'T'}))});return out;}
 function headline(top,bot,maxW,fsMax,shadow,hl){const ws=words($('head').value,$('accent').value);
  if(shadow){x.shadowColor='rgba(0,0,0,.6)';x.shadowBlur=14;x.shadowOffsetY=3}
- for(let fs=fsMax;fs>=34;fs-=2){x.font=`700 ${fs}px "Hind Siliguri",sans-serif`;
+ for(let fs=fsMax;fs>=34;fs-=2){x.font=`700 ${fs}px ${FF()}`;
   const sp=x.measureText(' ').width,lines=[];let cur=[],cw=0;
   ws.forEach(o=>{const w=x.measureText(o.w).width;if(cur.length&&cw+sp+w>maxW){lines.push({a:cur,w:cw});cur=[];cw=0}
    cur.push({...o,mw:w});cw+=(cur.length>1?sp:0)+w});
@@ -256,13 +268,32 @@ const OVERL=['over','band','float','diag'];
 const GEO={stack:[0,W,515,720,0],over:[0,W,0,1235,0],frame:[60,960,150,640,40],band:[0,W,0,1235,0],float:[0,W,0,780,0],diag:[0,W,0,860,0]};
 function setDesign(d){design=d;const c=DESIGNS[d];Object.entries(c.pal).forEach(([k,v])=>$(k).value=v);[MX,MWd,MY,MH,RAD]=GEO[c.layout];
  document.querySelectorAll('.dsg').forEach(b=>b.classList.toggle('on',b.dataset.d===d));dirty=true}
+const shc=document.createElement('canvas');shc.width=W;shc.height=200;
+function mixHex(a,b,t){const A=parseInt(a.slice(1),16),B=parseInt(b.slice(1),16),m=k=>Math.round(((A>>k)&255)*(1-t)+((B>>k)&255)*t);return `rgb(${m(16)},${m(8)},${m(0)})`}
+function buildShadow(){const c=shc.getContext('2d');c.globalCompositeOperation='source-over';c.clearRect(0,0,W,200);
+ const h=c.createLinearGradient(0,0,W,0),a=$('bgc').value,b=$('bgc2').value;h.addColorStop(0,mixHex(a,b,.19));h.addColorStop(1,mixHex(a,b,.81));c.fillStyle=h;c.fillRect(0,0,W,200);
+ c.globalCompositeOperation='destination-in';const v=c.createLinearGradient(0,0,0,200);v.addColorStop(0,'rgba(0,0,0,1)');v.addColorStop(.45,'rgba(0,0,0,.4)');v.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=v;c.fillRect(0,0,W,200);c.globalCompositeOperation='source-over'}
 function hexA(h,a){const n=parseInt(h.slice(1),16);return `rgba(${n>>16},${n>>8&255},${n&255},${a})`}
+function drawGrid(hh){
+ x.save();x.beginPath();x.rect(0,0,W,hh);x.clip();
+ const gl=x.createRadialGradient(W*.85,40,0,W*.85,40,600);gl.addColorStop(0,hexA($('accent2').value,.26));gl.addColorStop(1,hexA($('accent2').value,0));x.fillStyle=gl;x.fillRect(0,0,W,hh);
+ x.restore();softGrid(x,0,hh,.16,'255,255,255','down')}
+function lightBg(h){const n=parseInt(h.slice(1),16);return (0.299*(n>>16)+0.587*(n>>8&255)+0.114*(n&255))>150}
+function softGrid(c,y0,y1,a,col,mode){
+ c.save();c.beginPath();c.rect(0,y0,W,y1-y0);c.clip();c.lineWidth=1.2;const cell=60,reach=W*.36;
+ const al=y=>{const t=(y-y0)/(y1-y0);return a*(mode==='down'?1-t:mode==='up'?t:1)};
+ for(let i=0;i*cell<=W;i++){const px=i*cell,d=Math.min(px,W-px)/reach,sa=Math.pow(Math.max(0,1-d),1.4);if(sa<.01)continue;
+  const g=c.createLinearGradient(0,y0,0,y1);g.addColorStop(0,`rgba(${col},${al(y0)*sa})`);g.addColorStop(1,`rgba(${col},${al(y1)*sa})`);c.strokeStyle=g;c.beginPath();c.moveTo(px,y0);c.lineTo(px,y1);c.stroke()}
+ for(let y=Math.ceil(y0/cell)*cell;y<=y1;y+=cell){const g=c.createLinearGradient(0,0,W,0),A=al(y);
+  g.addColorStop(0,`rgba(${col},${A})`);g.addColorStop(.36,`rgba(${col},0)`);g.addColorStop(.64,`rgba(${col},0)`);g.addColorStop(1,`rgba(${col},${A})`);
+  c.strokeStyle=g;c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke()}
+ c.restore()}
 function drawLogo(cy,hmax,chip,txtCol){
  const k=$('k1').value/100;
  if(logoImg){const f=fit(logoImg,640*k,hmax*k);
   if(chip){x.fillStyle='#2a2730';x.beginPath();x.roundRect?x.roundRect(W/2-f.w/2-34,cy-f.h/2-16,f.w+68,f.h+32,30):x.rect(W/2-f.w/2-34,cy-f.h/2-16,f.w+68,f.h+32);x.fill()}
   x.drawImage(f.s,(W-f.w)/2,cy-f.h/2,f.w,f.h)}
- else{x.font='700 64px "Hind Siliguri",sans-serif';x.textAlign='center';const tw=x.measureText($('brand').value).width;
+ else{x.font='700 64px '+FF();x.textAlign='center';const tw=x.measureText($('brand').value).width;
   if(chip){x.fillStyle='#2a2730';x.beginPath();x.roundRect?x.roundRect(W/2-tw/2-34,cy-52,tw+68,90,30):x.rect(W/2-tw/2-34,cy-52,tw+68,90);x.fill()}
   x.fillStyle=chip?'#fff':txtCol;x.fillText($('brand').value,W/2,cy+22)}}
 function drawFooter(){
@@ -271,9 +302,9 @@ function drawFooter(){
  let lw=0,rw=0;
  if(footImg){const f=fit(footImg,420*$('k2').value/100,Math.min(108,76*$('k2').value/100));lw=f.w;x.drawImage(f.s,30,cy-f.h/2,f.w,f.h)}
  if(foot2Img){const f=fit(foot2Img,420*$('k3').value/100,Math.min(108,76*$('k3').value/100));rw=f.w;x.drawImage(f.s,W-30-f.w,cy-f.h/2,f.w,f.h)}
- else{x.fillStyle='#fff';x.font='700 38px "Hind Siliguri",sans-serif';x.textAlign='right';x.fillText($('ftext').value,W-30,cy+13);rw=x.measureText($('ftext').value).width}
+ else{x.fillStyle='#fff';x.font='700 38px '+FF();x.textAlign='right';x.fillText($('ftext').value,W-30,cy+13);rw=x.measureText($('ftext').value).width}
  const mt=$('fmid').value.trim();
- if(mt){const av=2*Math.min(W/2-(30+lw),W/2-(30+rw))-30;let fs=40;x.fillStyle='#fff';x.textAlign='center';do{x.font=`700 ${fs}px "Hind Siliguri",sans-serif`;fs-=2}while(x.measureText(mt).width>av&&fs>16);x.fillText(mt,W/2,cy+fs/3+8)}}
+ if(mt){const av=2*Math.min(W/2-(30+lw),W/2-(30+rw))-30;let fs=40;x.fillStyle='#fff';x.textAlign='center';do{x.font=`700 ${fs}px ${FF()}`;fs-=2}while(x.measureText(mt).width>av&&fs>16);x.fillText(mt,W/2,cy+fs/3+8)}}
 function bar(cx,y,w,h){const g=x.createLinearGradient(cx-w/2,0,cx+w/2,0);g.addColorStop(0,$('accent').value);g.addColorStop(1,$('accent2').value);x.fillStyle=g;x.beginPath();x.roundRect?x.roundRect(cx-w/2,y,w,h,h/2):x.rect(cx-w/2,y,w,h);x.fill()}
 function renderStatic(){
  const L=DESIGNS[design].layout,chip=!!DESIGNS[design].chip,tc=$('tcol').value;
@@ -281,21 +312,23 @@ function renderStatic(){
  try{x=sx;
   if(L==='stack'){
    const g=x.createLinearGradient(0,0,W,515);g.addColorStop(0,$('bgc').value);g.addColorStop(1,$('bgc2').value);x.fillStyle=g;x.fillRect(0,0,W,H);
+   drawGrid(515);buildShadow();
    drawLogo(85,115,false,'#fff');
    x.fillStyle=$('accent').value;x.fillRect(120,160,W-240,3);
    headline(185,430,W-120,76,false,null);
    x.fillStyle=$('accent').value;x.fillRect(120,450,W-240,3);
-   x.font='500 26px "Hind Siliguri",sans-serif';x.fillStyle='#ddd';x.textAlign='center';x.fillText($('date').value,W/2,492);
+   x.font='500 26px '+FF();x.fillStyle='#ddd';x.textAlign='center';x.fillText($('date').value,W/2,492);
    drawFooter();
   }else if(L==='over'){
    x.fillStyle=$('bgc').value;x.fillRect(0,0,W,H);drawFooter();
    x=ox;
    let g=x.createLinearGradient(0,0,0,300);g.addColorStop(0,hexA($('bgc').value,.9));g.addColorStop(1,hexA($('bgc').value,0));x.fillStyle=g;x.fillRect(0,0,W,300);
    g=x.createLinearGradient(0,560,0,1235);g.addColorStop(0,hexA($('bgc').value,0));g.addColorStop(.55,hexA($('bgc').value,.88));g.addColorStop(1,hexA($('bgc').value,.98));x.fillStyle=g;x.fillRect(0,560,W,675);
+   softGrid(x,0,300,.08,'255,255,255','down');softGrid(x,760,1235,.07,'255,255,255','up');
    drawLogo(85,115,false,'#fff');
    bar(W/2,800,130,7);
    headline(830,1150,W-130,74,true,null);
-   x.font='500 26px "Hind Siliguri",sans-serif';x.fillStyle='#ddd';x.textAlign='center';x.fillText($('date').value,W/2,1198);
+   x.font='500 26px '+FF();x.fillStyle='#ddd';x.textAlign='center';x.fillText($('date').value,W/2,1198);
    x.fillStyle=$('accent').value;x.fillRect(0,1231,W,4);
   }else if(L==='diag'){
    const pg=()=>{const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,$('bgc').value);g.addColorStop(1,$('bgc2').value);return g};
@@ -304,10 +337,11 @@ function renderStatic(){
    let g=x.createLinearGradient(0,0,0,300);g.addColorStop(0,'rgba(0,0,0,.6)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,W,300);
    drawLogo(85,115,false,'#fff');
    x.fillStyle=pg();x.beginPath();x.moveTo(0,830);x.lineTo(W,640);x.lineTo(W,1235);x.lineTo(0,1235);x.closePath();x.fill();
+   x.save();x.clip();softGrid(x,600,1235,.07,'255,255,255','none');x.restore();
    g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,$('accent').value);g.addColorStop(1,$('accent2').value);
    x.strokeStyle=g;x.lineWidth=12;x.beginPath();x.moveTo(0,830);x.lineTo(W,640);x.stroke();
    x.globalAlpha=.4;x.lineWidth=4;x.beginPath();x.moveTo(0,862);x.lineTo(W,672);x.stroke();x.globalAlpha=1;
-   x.font='700 26px "Hind Siliguri",sans-serif';const dw=x.measureText($('date').value).width;
+   x.font='700 26px '+FF();const dw=x.measureText($('date').value).width;
    x.fillStyle=g;x.beginPath();x.roundRect?x.roundRect(50,872,dw+44,48,24):x.rect(50,872,dw+44,48);x.fill();
    x.fillStyle='#2b1810';x.textAlign='left';x.fillText($('date').value,72,906);
    headline(940,1200,W-120,66,false,null);
@@ -316,28 +350,31 @@ function renderStatic(){
    x=ox;
    let g=x.createLinearGradient(0,0,0,300);g.addColorStop(0,'rgba(0,0,0,.65)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,W,300);
    g=x.createLinearGradient(0,640,0,1235);g.addColorStop(0,hexA($('bgc').value,0));g.addColorStop(1,hexA($('bgc').value,.95));x.fillStyle=g;x.fillRect(0,640,W,595);
+   softGrid(x,0,300,.08,'255,255,255','down');softGrid(x,760,1235,.07,'255,255,255','up');
    drawLogo(85,115,false,'#fff');
    g=x.createLinearGradient(50,0,1030,0);g.addColorStop(0,$('accent').value);g.addColorStop(1,$('accent2').value);
    x.shadowColor='rgba(0,0,0,.45)';x.shadowBlur=30;x.shadowOffsetY=10;x.fillStyle=g;x.beginPath();x.roundRect?x.roundRect(50,830,980,320,34):x.rect(50,830,980,320);x.fill();
    x.shadowColor='transparent';x.shadowBlur=0;x.shadowOffsetY=0;
    headline(850,1130,W-190,66,false,'#14141a');
-   x.font='500 26px "Hind Siliguri",sans-serif';x.fillStyle='#e8e8e8';x.textAlign='center';x.fillText($('date').value,W/2,1200);
+   x.font='500 26px '+FF();x.fillStyle='#e8e8e8';x.textAlign='center';x.fillText($('date').value,W/2,1200);
   }else if(L==='float'){
    x.fillStyle=$('bgc').value;x.fillRect(0,0,W,H);drawFooter();
    x=ox;
    let g=x.createLinearGradient(0,0,0,280);g.addColorStop(0,'rgba(0,0,0,.6)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,W,280);
+   softGrid(sx,0,1235,.06,lightBg($('bgc').value)?'0,0,0':'255,255,255','none');softGrid(x,0,280,.08,'255,255,255','down');
    drawLogo(85,115,chip,'#fff');
    x.shadowColor='rgba(0,0,0,.35)';x.shadowBlur=32;x.shadowOffsetY=12;x.fillStyle=$('bgc2').value;x.beginPath();x.roundRect?x.roundRect(50,715,980,485,38):x.rect(50,715,980,485);x.fill();
    x.shadowColor='transparent';x.shadowBlur=0;x.shadowOffsetY=0;
    bar(W/2,748,120,7);
    headline(775,1120,W-190,66,false,null);
-   x.globalAlpha=.65;x.font='500 26px "Hind Siliguri",sans-serif';x.fillStyle=tc;x.textAlign='center';x.fillText($('date').value,W/2,1170);x.globalAlpha=1;
+   x.globalAlpha=.65;x.font='500 26px '+FF();x.fillStyle=tc;x.textAlign='center';x.fillText($('date').value,W/2,1170);x.globalAlpha=1;
   }else{
    const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,$('bgc').value);g.addColorStop(1,$('bgc2').value);x.fillStyle=g;x.fillRect(0,0,W,H);
+   softGrid(x,0,H,.06,lightBg($('bgc').value)?'0,0,0':'255,255,255','none');
    drawLogo(75,100,chip,tc);
    bar(W/2,818,130,7);
    headline(845,1150,W-140,70,false,null);
-   x.globalAlpha=.7;x.font='500 26px "Hind Siliguri",sans-serif';x.fillStyle=tc;x.textAlign='center';x.fillText($('date').value,W/2,1198);x.globalAlpha=1;
+   x.globalAlpha=.7;x.font='500 26px '+FF();x.fillStyle=tc;x.textAlign='center';x.fillText($('date').value,W/2,1198);x.globalAlpha=1;
    drawFooter();
   }
  }finally{x=mainX}}
@@ -348,9 +385,9 @@ function draw(){
  if(ov)media(ov.s,ov.w,ov.h,my,mh);
  else if(vid&&vid.videoWidth)media(vid,vid.videoWidth,vid.videoHeight,my,mh);
  else if(mImg)media(mImg,mImg.width,mImg.height,my,mh);
- else{x.fillStyle='#777';x.font='500 36px "Hind Siliguri",sans-serif';x.textAlign='center';x.fillText('Add an image or video',MX+MWd/2,my+mh/2)}
+ else{x.fillStyle='#777';x.font='500 36px '+FF();x.textAlign='center';x.fillText('Add an image or video',MX+MWd/2,my+mh/2)}
  if(OVERL.includes(L))x.drawImage(oc,0,0);
- if(L==='stack'){const a=$('shd').value/100*0.75,gs=x.createLinearGradient(0,my,0,my+170);gs.addColorStop(0,`rgba(0,0,0,${a})`);gs.addColorStop(.5,`rgba(0,0,0,${a*0.35})`);gs.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gs;x.fillRect(0,my,W,170)}
+ if(L==='stack'){x.globalAlpha=Math.min(1,$('shd').value/100*0.9);x.drawImage(shc,0,my);x.globalAlpha=1}
 }
 ['input','change'].forEach(ev=>document.addEventListener(ev,()=>{dirty=true}));
 function loop(){draw();requestAnimationFrame(loop)}
@@ -436,6 +473,9 @@ $('bfa').onclick=()=>{const[bw,bh]=bbox(lastD.sw,lastD.sh,$('mr').value*Math.PI/
 $('br9').onclick=()=>{let v=+$('mr').value+90;if(v>180)v-=360;$('mr').value=v};
 $('brs').onclick=()=>{setZ(100);$('mr').value=0};
 document.querySelectorAll('.dsg').forEach(b=>b.onclick=()=>setDesign(b.dataset.d));setDesign('classic');
+function loadFonts(){const p=[];['500','700'].forEach(w=>{p.push(document.fonts.load(`${w} 40px "${$('fen').value}"`,'Abc 06 October 2026 www.'));p.push(document.fonts.load(`${w} 40px "${$('fbn').value}"`,'ঢাকার বাস রুট কমে'))});
+ return Promise.all(p).catch(()=>{}).then(()=>{dirty=true})}
+$('fbn').onchange=loadFonts;$('fen').onchange=loadFonts;
 const dock=$('dock');let curTab='';
 function openTab(t){const same=curTab===t&&!dock.classList.contains('min');dock.classList.toggle('min',same);curTab=t;
  document.querySelectorAll('.dt').forEach(b=>b.classList.toggle('on',!same&&b.dataset.t===t));
