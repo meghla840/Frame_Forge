@@ -103,12 +103,39 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 .tl{position:relative;height:44px;border-radius:10px;background:rgba(127,127,127,.22);overflow:hidden;border:1px solid var(--bd);cursor:pointer}
 .tl .sg{position:absolute;top:5px;bottom:5px;background:var(--ac);opacity:.85;border-radius:6px;outline:1px solid rgba(0,0,0,.4)}
 .tl .ph{position:absolute;top:0;bottom:0;width:3px;background:#fff;box-shadow:0 0 6px rgba(0,0,0,.7);z-index:2;pointer-events:none}
+
+.colL,.colR,.colC,.dh{display:contents}
+.dh{display:none}
+@media (min-width:1100px){
+body{padding:18px 24px}
+body.hasdock,body.hasvid{padding-bottom:30px}
+.wrap{max-width:1560px;display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,620px) minmax(0,1fr);gap:0 24px;align-items:start}
+h1{grid-column:1/-1}
+.colL,.colC,.colR{display:block;grid-row:2;min-width:0}
+.colL{grid-column:1}.colC{grid-column:2;position:sticky;top:14px}.colR{grid-column:3;display:flex;flex-direction:column}
+.colL>.panel:first-child{margin-top:0}
+.colR>.panel,.colR>.dock{margin-top:14px}
+.pmedia{order:1;margin-top:0!important}.dock{order:2}.plogo{order:3}.pfoot{order:4}.pdl{order:5}
+canvas{width:min(100%,calc((100vh - 90px)*.8));margin:0 auto}
+.dock{position:static;left:auto;right:auto;bottom:auto;max-width:none;transform:none;opacity:1;pointer-events:auto;backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--pn);border-radius:12px;box-shadow:none;padding:14px;transition:border-color .3s}
+.dock:hover{border-color:var(--ac)}
+.dock .dtabs{display:none}
+.dock.min .dbody{display:grid}
+.dh{display:block;margin:0 0 6px}
+.dbody{gap:14px;padding:0}
+.dp[hidden]:not([data-t=v]){display:grid}
+.dp[data-t=v]{display:none}
+body.hasvid .dp[data-t=v]{display:grid}
+.dp[data-l]{border-top:1px solid var(--bd);padding-top:12px}
+.dp[data-l]::before{content:attr(data-l);font-size:12px;color:var(--mut)}
+}
 </style></head><body>
 <div class="blob b1"></div><div class="blob b2"></div>
 <div id="splash"><div class="sp-in"><div class="sp-e"><svg class="plane" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1769AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div><div class="sp-t">Welcome to Rafsan's Studio</div><p id="sp-m"></p><button id="sp-b" type="button">Let's create</button></div></div>
 <div class="wrap">
 <h1>Frame Forge</h1>
-<canvas id="c" width="1080" height="1350"></canvas>
+<div class="colC"><canvas id="c" width="1080" height="1350"></canvas></div>
+<div class="colL">
 <div class="panel">
 <h2>Website theme</h2>
 <div class="row3"><button class="th" data-t="cine" type="button">Dark Cinematic</button><button class="th" data-t="min" type="button">Minimal Clean</button><button class="th" data-t="earth" type="button">Creative Earthy</button></div>
@@ -125,6 +152,8 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 <button class="dsg" data-d="oldmoney" type="button"><i style="background:linear-gradient(135deg,#2b1810,#5c1a2b 55%,#e3c4a1)"></i>Old Money</button>
 <button class="dsg" data-d="daylight" type="button"><i style="background:linear-gradient(135deg,#EFE8DD,#7c3aed 55%,#ec4899)"></i>Daylight</button>
 <button class="dsg" data-d="rose" type="button"><i style="background:linear-gradient(135deg,#101016,#ff5c8a)"></i>Rose</button>
+<button class="dsg" data-d="noir" type="button"><i style="background:linear-gradient(135deg,#0a0a0a,#c9a24b)"></i>Noir Gold</button><button class="dsg" data-d="crimson" type="button"><i style="background:linear-gradient(135deg,#0d0506,#ff3b4a)"></i>Crimson</button><button class="dsg" data-d="neon" type="button"><i style="background:linear-gradient(135deg,#a855f7,#22d3ee)"></i>Neon Night</button><button class="dsg" data-d="ocean" type="button"><i style="background:linear-gradient(135deg,#04121c,#5eead4)"></i>Ocean</button><button class="dsg" data-d="emerald" type="button"><i style="background:linear-gradient(135deg,#06120d,#10b981)"></i>Emerald</button>
+<button class="dsg" data-d="widescreen" type="button"><i style="background:linear-gradient(135deg,#07090d,#f97316)"></i>Widescreen</button><button class="dsg" data-d="glass" type="button"><i style="background:linear-gradient(135deg,#080a14,#60a5fa)"></i>Midnight Glass</button><button class="dsg" data-d="golden" type="button"><i style="background:linear-gradient(135deg,#140c04,#f59e0b)"></i>Golden Hour</button><button class="dsg" data-d="poster" type="button"><i style="background:linear-gradient(135deg,#0a0d14,#94a3b8)"></i>Ice Poster</button><button class="dsg" data-d="viewfinder" type="button"><i style="background:linear-gradient(135deg,#0a0a0a,#ef4444)"></i>Viewfinder</button><button class="dsg" data-d="royal" type="button"><i style="background:linear-gradient(135deg,#0b0614,#7c3aed)"></i>Royal Violet</button>
 </div>
 </div>
 
@@ -140,6 +169,7 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 <h2>Headline</h2>
 <label>Headline text
 <textarea id="head" rows="3">ঢাকার ৯৮ বাস রুট কমে হবে ৩২, চালু হবে *'এক রুট, এক কোম্পানি'* মডেল</textarea></label>
+<label>Text alignment<select id="ta"><option value="auto">Auto (design default)</option><option value="l">Left</option><option value="c">Center</option><option value="r">Right</option></select></label>
 <div class="row">
 <label>Source label<input id="slabel" value="Source:"></label>
 <label>Source (page name or anything)<input id="src" value=""></label>
@@ -167,7 +197,9 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 <label>Headline line spacing<div style="display:grid;grid-template-columns:46px 1fr 46px;gap:8px;align-items:center"><button class="alt" id="lhm" type="button">−</button><input type="range" id="lhs" min="0.9" max="1.8" step="0.05" value="1.15"><button class="alt" id="lhp" type="button">+</button></div></label>
 </div>
 
-<div class="panel">
+</div>
+<div class="colR">
+<div class="panel plogo">
 <h2>Top logo</h2>
 <label>Logo image<input type="file" id="logo" accept="image/*"></label>
 <label>Top logo size<input type="range" id="k1" min="20" max="250" value="100"></label>
@@ -175,14 +207,14 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 <label>Background removal strength<input type="range" id="tol" min="10" max="120" value="45"></label>
 </div>
 
-<div class="panel">
+<div class="panel pmedia">
 <h2>Middle image / video</h2>
 <label>Image or video<input type="file" id="media" accept="image/*,video/*"></label>
 <label class="chk"><input type="checkbox" id="snd" checked> Video sound (preview)</label>
 <button id="pp" class="alt" type="button">Play / Pause video</button>
 </div>
 
-<div class="panel">
+<div class="panel pfoot">
 <h2>Footer</h2>
 <label>Left logo<input type="file" id="foot" accept="image/*"></label>
 <label>Left logo size<input type="range" id="k2" min="20" max="250" value="100"></label>
@@ -195,25 +227,26 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 <label>Footer color<input type="color" id="fbg" value="#3a3a3a"></label>
 </div>
 
-<div class="panel">
+<div class="panel pdl">
 <h2>Download</h2>
 <button id="dlimg">Download image (PNG)</button>
 <button id="dlvid" class="alt">Download video (MP4)</button>
 <div id="st"></div>
-</div></div>
+</div>
 <div class="dock" id="dock">
+<h2 class="dh">Edit image / video</h2>
 <div class="dbody">
 <div class="dp" data-t="z"><div class="dr"><span>Zoom</span><b id="vz">100%</b></div><input type="range" id="mz" min="20" max="400" value="100"></div>
 <div class="dp" data-t="r" hidden><div class="dr"><span>Rotate</span><b id="vr">0°</b></div><div class="dgo"><input type="range" id="mr" min="-180" max="180" value="0"><button class="alt rb" id="br9" type="button">+90°</button></div></div>
 <div class="dp" data-t="m" hidden><div class="dr"><span>Left / Right</span></div><input type="range" id="mpx" min="-100" max="100" value="0"><div class="dr"><span>Up / Down</span></div><input type="range" id="mpy" min="-100" max="100" value="0"></div>
-<div class="dp" data-t="v" hidden>
+<div class="dp" data-t="v" data-l="Video edit" hidden>
 <div class="tl" id="tl"><div class="ph" id="ph"></div></div>
 <input type="range" id="scrub" min="0" max="1000" value="0">
 <div class="dr"><span id="tcur">0:00.0</span><b id="tinfo">Output 0:00.0</b></div>
 <div class="dvb"><button class="alt" id="vsplit" type="button">Split</button><button class="alt" id="vdel" type="button">Delete</button><button class="alt" id="vts" type="button">Trim start</button><button class="alt" id="vte" type="button">Trim end</button></div>
 <div class="dvb"><button id="vpp" type="button">Play / Pause</button><button class="alt" id="vn1" type="button">◀ 0.1s</button><button class="alt" id="vn2" type="button">0.1s ▶</button><button class="alt" id="vrs" type="button">Reset</button></div>
 </div>
-<div class="dp" data-t="f" hidden><div class="dfit"><button id="bfw" type="button">Fit width</button><button id="bfa" type="button">Fill area</button><button class="alt" id="brs" type="button">Reset</button></div></div>
+<div class="dp" data-t="f" data-l="Fit" hidden><div class="dfit"><button id="bfw" type="button">Fit width</button><button id="bfa" type="button">Fill area</button><button class="alt" id="brs" type="button">Reset</button></div></div>
 </div>
 <div class="dtabs">
 <button class="dt" data-t="z" type="button"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></svg>Zoom</button>
@@ -222,6 +255,8 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 <button class="dt" data-t="f" type="button"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>Fit</button>
 <button class="dt" data-t="v" id="tabv" type="button" hidden><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>Edit</button>
 </div></div>
+</div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/mp4box@0.5.2/dist/mp4box.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.js"></script>
 <script>
@@ -254,7 +289,7 @@ function headline(top,bot,maxW,fsMax,shadow,hl){const ws=words($('head').value,$
   const lh=fs*1.3,lh2=fs*(+$('lhs').value);
   if(lines.length*lh<=bot-top||fs<=34){
    let y=top+((bot-top)-lines.length*lh2)/2+fs;
-   lines.forEach(l=>{let px=(W-l.w)/2;l.a.forEach(o=>{if(o.c==='G'&&hl){x.fillStyle=hl}else if(o.c==='G'){const gr=x.createLinearGradient(px,y-fs,px+o.mw,y);gr.addColorStop(0,$('accent').value);gr.addColorStop(1,$('accent2').value);x.fillStyle=gr}else x.fillStyle=$('tcol').value;x.textAlign='left';x.fillText(o.w,px,y);px+=o.mw+sp});y+=lh2});
+   lines.forEach(l=>{let px=ALN==='l'?(W-maxW)/2:ALN==='r'?(W+maxW)/2-l.w:(W-l.w)/2;l.a.forEach(o=>{if(o.c==='G'&&hl){x.fillStyle=hl}else if(o.c==='G'){const gr=x.createLinearGradient(px,y-fs,px+o.mw,y);gr.addColorStop(0,$('accent').value);gr.addColorStop(1,$('accent2').value);x.fillStyle=gr}else x.fillStyle=$('tcol').value;x.textAlign='left';x.fillText(o.w,px,y);px+=o.mw+sp});y+=lh2});
    break;}}
  x.shadowColor='transparent';x.shadowBlur=0;x.shadowOffsetY=0}
 const cache=new WeakMap();
@@ -283,7 +318,7 @@ function media(src,sw,sh,my,mh){
  x.translate(MX+MWd/2+$('mpx').value*MWd/100,my+mh/2+$('mpy').value*mh/100);x.rotate(t);x.scale(sc2,sc2);x.drawImage(src,-sw/2,-sh/2,sw,sh);x.restore();}
 const sc=document.createElement('canvas');sc.width=W;sc.height=H;const sx=sc.getContext('2d');
 const oc=document.createElement('canvas');oc.width=W;oc.height=H;const ox=oc.getContext('2d');
-let MY=515,MH=720,MX=0,MWd=W,RAD=0,design='classic';
+let MY=515,MH=720,MX=0,MWd=W,RAD=0,design='classic',ALN='c';
 const DESIGNS={
  classic:{layout:'stack',pal:{accent:'#8f0010',accent2:'#e0202f',bgc:'#141414',bgc2:'#4a0a14',fbg:'#3a3a3a',tcol:'#ffffff'}},
  cinema:{layout:'over',pal:{accent:'#00ADB5',accent2:'#7ee8ee',bgc:'#121212',bgc2:'#1f1f1f',fbg:'#121212',tcol:'#ffffff'}},
@@ -292,7 +327,18 @@ const DESIGNS={
  sunset:{layout:'band',pal:{accent:'#ff7a18',accent2:'#ff2d75',bgc:'#1a0f1f',bgc2:'#2e1530',fbg:'#1a0f1f',tcol:'#ffffff'}},
  oldmoney:{layout:'diag',pal:{accent:'#e3c4a1',accent2:'#b9825a',bgc:'#2b1810',bgc2:'#5c1a2b',fbg:'#22110b',tcol:'#f8efe4'}},
  daylight:{layout:'float',chip:true,pal:{accent:'#7c3aed',accent2:'#ec4899',bgc:'#EFE8DD',bgc2:'#FFFFFF',fbg:'#2f2f36',tcol:'#1d1d28'}},
- rose:{layout:'float',pal:{accent:'#ff5c8a',accent2:'#ff9a8b',bgc:'#101016',bgc2:'#1d1d26',fbg:'#101016',tcol:'#ffffff'}}};
+ rose:{layout:'float',pal:{accent:'#ff5c8a',accent2:'#ff9a8b',bgc:'#101016',bgc2:'#1d1d26',fbg:'#101016',tcol:'#ffffff'}},
+ noir:{layout:'over',v:{frame:1},pal:{accent:'#c9a24b',accent2:'#f1d38a',bgc:'#0a0a0a',bgc2:'#161616',fbg:'#0a0a0a',tcol:'#ffffff'}},
+ crimson:{layout:'over',v:{aln:'l',vbar:1},pal:{accent:'#b3121f',accent2:'#ff3b4a',bgc:'#0d0506',bgc2:'#1c0a0d',fbg:'#0d0506',tcol:'#ffffff'}},
+ neon:{layout:'over',v:{glow:1},pal:{accent:'#a855f7',accent2:'#22d3ee',bgc:'#090612',bgc2:'#150b2a',fbg:'#090612',tcol:'#ffffff'}},
+ ocean:{layout:'over',v:{aln:'l',pill:1},pal:{accent:'#0ea5e9',accent2:'#5eead4',bgc:'#04121c',bgc2:'#0a2233',fbg:'#04121c',tcol:'#ffffff'}},
+ emerald:{layout:'over',v:{aln:'l'},pal:{accent:'#10b981',accent2:'#a7f3d0',bgc:'#06120d',bgc2:'#0d2218',fbg:'#06120d',tcol:'#ffffff'}},
+ widescreen:{layout:'over',v:{bars:1},pal:{accent:'#f97316',accent2:'#fdba74',bgc:'#07090d',bgc2:'#10151d',fbg:'#07090d',tcol:'#ffffff'}},
+ glass:{layout:'over',v:{glass:1,aln:'l'},pal:{accent:'#60a5fa',accent2:'#c4b5fd',bgc:'#080a14',bgc2:'#121730',fbg:'#080a14',tcol:'#ffffff'}},
+ golden:{layout:'over',v:{vig:1,rules:1},pal:{accent:'#f59e0b',accent2:'#fde68a',bgc:'#140c04',bgc2:'#2a1808',fbg:'#140c04',tcol:'#ffffff'}},
+ poster:{layout:'over',v:{top:1},pal:{accent:'#94a3b8',accent2:'#e2e8f0',bgc:'#0a0d14',bgc2:'#151b28',fbg:'#0a0d14',tcol:'#ffffff'}},
+ viewfinder:{layout:'over',v:{vf:1},pal:{accent:'#ef4444',accent2:'#ffffff',bgc:'#0a0a0a',bgc2:'#161616',fbg:'#0a0a0a',tcol:'#ffffff'}},
+ royal:{layout:'over',v:{frame:1,glow:1},pal:{accent:'#7c3aed',accent2:'#fbbf24',bgc:'#0b0614',bgc2:'#1a0d33',fbg:'#0b0614',tcol:'#ffffff'}}};
 const OVERL=['over','band','float','diag'];
 const GEO={stack:[0,W,515,720,0],over:[0,W,0,1235,0],frame:[60,960,150,640,40],band:[0,W,0,1235,0],float:[0,W,0,780,0],diag:[0,W,0,860,0]};
 function setDesign(d){design=d;const c=DESIGNS[d];Object.entries(c.pal).forEach(([k,v])=>$(k).value=v);[MX,MWd,MY,MH,RAD]=GEO[c.layout];
@@ -363,7 +409,7 @@ function bar(cx,y,w,h){const g=x.createLinearGradient(cx-w/2,0,cx+w/2,0);g.addCo
 function renderStatic(){
  sx.imageSmoothingQuality='high';ox.imageSmoothingQuality='high';
  const L=DESIGNS[design].layout,chip=!!DESIGNS[design].chip,tc=$('tcol').value;
- sx.clearRect(0,0,W,H);ox.clearRect(0,0,W,H);
+ sx.clearRect(0,0,W,H);ox.clearRect(0,0,W,H);ALN=$('ta').value==='auto'?(DESIGNS[design].v||{}).aln||'c':$('ta').value;
  try{x=sx;
   if(L==='stack'){
    const g=x.createLinearGradient(0,0,W,515);g.addColorStop(0,$('bgc').value);g.addColorStop(1,$('bgc2').value);x.fillStyle=g;x.fillRect(0,0,W,H);
@@ -377,16 +423,35 @@ function renderStatic(){
    x.font='500 26px '+FF();x.fillStyle='#ddd';x.textAlign='center';x.fillText($('date').value,W/2,492);
    drawFooter();
   }else if(L==='over'){
-   x.fillStyle=$('bgc').value;x.fillRect(0,0,W,H);drawFooter();
+   const V=DESIGNS[design].v||{},bg=$('bgc').value,A=$('accent').value,A2=$('accent2').value,al=ALN;
+   x.fillStyle=bg;x.fillRect(0,0,W,H);drawFooter();
    x=ox;
-   let g=x.createLinearGradient(0,0,0,300);g.addColorStop(0,hexA($('bgc').value,.9));g.addColorStop(1,hexA($('bgc').value,0));x.fillStyle=g;x.fillRect(0,0,W,300);
-   g=x.createLinearGradient(0,560,0,1235);g.addColorStop(0,hexA($('bgc').value,0));g.addColorStop(.55,hexA($('bgc').value,.88));g.addColorStop(1,hexA($('bgc').value,.98));x.fillStyle=g;x.fillRect(0,560,W,675);
-   softGrid(x,0,300,.08,'255,255,255','down');decorBottom(560,1235,1,'255,255,255');
+   const rrp=(a,b,c,d,r)=>x.roundRect?x.roundRect(a,b,c,d,r):x.rect(a,b,c,d);
+   const vb=V.vbar&&al!=='c',pad=vb||V.glass,lx0=pad?95:65,mw=pad?W-190:W-130;
+   let g;
+   if(V.vig){g=x.createRadialGradient(W/2,560,260,W/2,560,860);g.addColorStop(0,hexA(bg,0));g.addColorStop(1,hexA(bg,.85));x.fillStyle=g;x.fillRect(0,0,W,1235)}
+   if(V.top){g=x.createLinearGradient(0,0,0,720);g.addColorStop(0,hexA(bg,.96));g.addColorStop(.6,hexA(bg,.7));g.addColorStop(1,hexA(bg,0))}
+   else{g=x.createLinearGradient(0,0,0,300);g.addColorStop(0,hexA(bg,.9));g.addColorStop(1,hexA(bg,0))}
+   x.fillStyle=g;x.fillRect(0,0,W,V.top?720:300);
+   g=x.createLinearGradient(0,560,0,1235);g.addColorStop(0,hexA(bg,0));g.addColorStop(.55,hexA(bg,V.top?.3:.88));g.addColorStop(1,hexA(bg,V.top?.55:.98));x.fillStyle=g;x.fillRect(0,560,W,675);
+   if(V.bars){x.fillStyle=bg;x.fillRect(0,0,W,200);x.fillRect(0,800,W,435);x.fillStyle=A;x.fillRect(0,198,W,3);x.fillRect(0,800,W,3)}
+   softGrid(x,0,300,.08,'255,255,255','down');if(!V.top)decorBottom(560,1235,1,'255,255,255');
    drawLogo(85,115,false,'#fff');
-   bar(W/2,800,130,7);
-   headline(830,1150,W-130,74,true,null);
-   x.font='500 26px '+FF();x.fillStyle='#ddd';x.textAlign='center';x.fillText($('date').value,W/2,1198);
-   x.fillStyle=$('accent').value;x.fillRect(0,1231,W,4);
+   if(V.glow){g=x.createRadialGradient(W/2,1235,0,W/2,1235,720);g.addColorStop(0,hexA(A,.38));g.addColorStop(1,hexA(A,0));x.fillStyle=g;x.fillRect(0,515,W,720)}
+   if(V.glass){x.shadowColor='rgba(0,0,0,.4)';x.shadowBlur=30;x.fillStyle='rgba(8,10,22,.58)';x.beginPath();rrp(50,780,980,420,34);x.fill();x.shadowColor='transparent';x.shadowBlur=0;x.strokeStyle=hexA(A2,.55);x.lineWidth=2;x.beginPath();rrp(50,780,980,420,34);x.stroke()}
+   if(V.frame){x.strokeStyle=hexA(A2,.8);x.lineWidth=3;x.strokeRect(20,20,W-40,1195);x.strokeStyle=hexA(A2,.4);x.lineWidth=1.2;x.strokeRect(32,32,W-64,1171)}
+   if(V.vf){x.strokeStyle='#fff';x.lineWidth=6;x.lineCap='square';[[40,40,1,1],[W-40,40,-1,1],[40,1210,1,-1],[W-40,1210,-1,-1]].forEach(([a,b,p,q])=>{x.beginPath();x.moveTo(a+p*90,b);x.lineTo(a,b);x.lineTo(a,b+q*90);x.stroke()});x.lineCap='butt'}
+   const T=V.top?{b:175,h0:205,h1:505,d:550}:V.glass?{b:812,h0:835,h1:1120,d:1168}:V.bars?{b:840,h0:862,h1:1150,d:1196}:{b:800,h0:830,h1:1150,d:1196};
+   if(vb){const g2=x.createLinearGradient(0,T.h0,0,T.h1);g2.addColorStop(0,A2);g2.addColorStop(1,A);x.fillStyle=g2;x.beginPath();rrp(al==='r'?W-67:58,T.h0,9,T.h1-T.h0,5);x.fill()}
+   else{if(V.glow){x.shadowColor=A2;x.shadowBlur=28}bar(al==='l'?lx0+65:al==='r'?W-lx0-65:W/2,T.b,130,7);x.shadowColor='transparent';x.shadowBlur=0}
+   headline(T.h0,T.h1,mw,74,true,null);
+   x.font='500 26px '+FF();x.textAlign='left';
+   const dt=$('date').value,tw=x.measureText(dt).width,ex=V.vf?26:0,tt=tw+ex,x0=al==='l'?lx0:al==='r'?W-lx0-tt:(W-tt)/2;
+   if(V.pill){x.fillStyle=hexA(A2,.2);x.beginPath();rrp(x0-20,T.d-33,tt+40,46,23);x.fill()}
+   if(V.vf){x.fillStyle='#ef4444';x.beginPath();x.arc(x0+8,T.d-9,8,0,7);x.fill()}
+   if(V.rules){x.fillStyle=hexA(A2,.7);if(al!=='r')x.fillRect(x0+tt+22,T.d-10,110,2);if(al!=='l')x.fillRect(x0-132,T.d-10,110,2)}
+   x.fillStyle=V.pill||V.rules?A2:'#ddd';x.fillText(dt,x0+ex,T.d);
+   x.fillStyle=A;x.fillRect(0,1231,W,4);
   }else if(L==='diag'){
    const pg=()=>{const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,$('bgc').value);g.addColorStop(1,$('bgc2').value);return g};
    x.fillStyle=pg();x.fillRect(0,0,W,H);drawFooter();
