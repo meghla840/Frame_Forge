@@ -104,6 +104,7 @@ button.dsg.on{border-color:var(--ac);color:var(--ac)}
 .tl .sg{position:absolute;top:5px;bottom:5px;background:var(--ac);opacity:.85;border-radius:6px;outline:1px solid rgba(0,0,0,.4)}
 .tl .ph{position:absolute;top:0;bottom:0;width:3px;background:#fff;box-shadow:0 0 6px rgba(0,0,0,.7);z-index:2;pointer-events:none}
 
+button.al{background:transparent;color:var(--fg);border:1px solid var(--bd);box-shadow:none;font-size:12px;padding:10px 4px}button.al.on{border-color:var(--ac);color:var(--ac)}button.al::after{display:none!important}
 .colL,.colR,.colC,.dh{display:contents}
 .dh{display:none}
 @media (min-width:1100px){
@@ -169,7 +170,7 @@ body.hasvid .dp[data-t=v]{display:grid}
 <h2>Headline</h2>
 <label>Headline text
 <textarea id="head" rows="3">ঢাকার ৯৮ বাস রুট কমে হবে ৩২, চালু হবে *'এক রুট, এক কোম্পানি'* মডেল</textarea></label>
-<label>Text alignment<select id="ta"><option value="auto">Auto (design default)</option><option value="l">Left</option><option value="c">Center</option><option value="r">Right</option></select></label>
+<label>Text alignment (headline, date, lines)<input type="hidden" id="ta" value="auto"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px"><button class="al on" data-a="auto" type="button">Auto</button><button class="al" data-a="l" type="button">⬅ Left</button><button class="al" data-a="c" type="button">Center</button><button class="al" data-a="r" type="button">Right ➡</button></div></label>
 <div class="row">
 <label>Source label<input id="slabel" value="Source:"></label>
 <label>Source (page name or anything)<input id="src" value=""></label>
@@ -374,6 +375,8 @@ function softGrid(c,y0,y1,a,col,mode){
   g.addColorStop(0,`rgba(${col},${A})`);g.addColorStop(.4,`rgba(${col},0)`);g.addColorStop(.6,`rgba(${col},0)`);g.addColorStop(1,`rgba(${col},${A})`);
   c.strokeStyle=g;c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke()}
  c.restore()}
+function ax(w,m){return ALN==='l'?m:ALN==='r'?W-m-w:(W-w)/2}
+function acx(w,m){return ax(w,m)+w/2}
 function lx(w){const p=$('lpos').value;return p==='left'?50+w/2:p==='right'?W-50-w/2:W/2}
 function drawSource(cy,col){
  const txt=$('src').value.trim();if(!txt)return;
@@ -419,8 +422,8 @@ function renderStatic(){
    drawLogo(85,115,false,'#fff');
    x.globalAlpha=.85;x.fillStyle=$('accent2').value;{const lw=$('ln1').value/100*W;x.fillRect((W-lw)/2,160,lw,+$('lnt').value)}x.globalAlpha=1;
    headline(185,430,W-120,76,false,null);
-   x.globalAlpha=.85;x.fillStyle=$('accent2').value;{const lw=$('ln2').value/100*W;x.fillRect((W-lw)/2,450,lw,+$('lnt').value)}x.globalAlpha=1;
-   x.font='500 26px '+FF();x.fillStyle='#ddd';x.textAlign='center';x.fillText($('date').value,W/2,492);
+   x.globalAlpha=.85;x.fillStyle=$('accent2').value;{const lw=$('ln2').value/100*W;x.fillRect(ax(lw,60),450,lw,+$('lnt').value)}x.globalAlpha=1;
+   x.font='500 26px '+FF();x.fillStyle='#ddd';x.textAlign='left';x.fillText($('date').value,ax(x.measureText($('date').value).width,60),492);
    drawFooter();
   }else if(L==='over'){
    const V=DESIGNS[design].v||{},bg=$('bgc').value,A=$('accent').value,A2=$('accent2').value,al=ALN;
@@ -464,8 +467,8 @@ function renderStatic(){
    x.strokeStyle=g;x.lineWidth=12;x.beginPath();x.moveTo(0,830);x.lineTo(W,640);x.stroke();
    x.globalAlpha=.4;x.lineWidth=4;x.beginPath();x.moveTo(0,862);x.lineTo(W,672);x.stroke();x.globalAlpha=1;
    x.font='700 26px '+FF();const dw=x.measureText($('date').value).width;
-   x.fillStyle=g;x.beginPath();x.roundRect?x.roundRect(50,872,dw+44,48,24):x.rect(50,872,dw+44,48);x.fill();
-   x.fillStyle='#2b1810';x.textAlign='left';x.fillText($('date').value,72,906);
+   const pxx=$('ta').value==='auto'?50:ax(dw+44,50);x.fillStyle=g;x.beginPath();x.roundRect?x.roundRect(pxx,872,dw+44,48,24):x.rect(pxx,872,dw+44,48);x.fill();
+   x.fillStyle='#2b1810';x.textAlign='left';x.fillText($('date').value,pxx+22,906);
    headline(940,1200,W-120,66,false,null);
   }else if(L==='band'){
    x.fillStyle=$('bgc').value;x.fillRect(0,0,W,H);drawFooter();
@@ -478,7 +481,7 @@ function renderStatic(){
    x.shadowColor='rgba(0,0,0,.45)';x.shadowBlur=30;x.shadowOffsetY=10;x.fillStyle=g;x.beginPath();x.roundRect?x.roundRect(50,830,980,320,34):x.rect(50,830,980,320);x.fill();
    x.shadowColor='transparent';x.shadowBlur=0;x.shadowOffsetY=0;
    headline(850,1130,W-190,66,false,'#14141a');
-   x.font='500 26px '+FF();x.fillStyle='#e8e8e8';x.textAlign='center';x.fillText($('date').value,W/2,1200);
+   x.font='500 26px '+FF();x.fillStyle='#e8e8e8';x.textAlign='left';x.fillText($('date').value,ax(x.measureText($('date').value).width,95),1200);
   }else if(L==='float'){
    x.fillStyle=$('bgc').value;x.fillRect(0,0,W,H);drawFooter();
    x=ox;
@@ -487,16 +490,16 @@ function renderStatic(){
    drawLogo(85,115,chip,'#fff');
    x.shadowColor='rgba(0,0,0,.35)';x.shadowBlur=32;x.shadowOffsetY=12;x.fillStyle=$('bgc2').value;x.beginPath();x.roundRect?x.roundRect(50,715,980,485,38):x.rect(50,715,980,485);x.fill();
    x.shadowColor='transparent';x.shadowBlur=0;x.shadowOffsetY=0;
-   bar(W/2,748,120,7);
+   bar(acx(120,95),748,120,7);
    headline(775,1120,W-190,66,false,null);
-   x.globalAlpha=.65;x.font='500 26px '+FF();x.fillStyle=tc;x.textAlign='center';x.fillText($('date').value,W/2,1170);x.globalAlpha=1;
+   x.globalAlpha=.65;x.font='500 26px '+FF();x.fillStyle=tc;x.textAlign='left';x.fillText($('date').value,ax(x.measureText($('date').value).width,95),1170);x.globalAlpha=1;
   }else{
    const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,$('bgc').value);g.addColorStop(1,$('bgc2').value);x.fillStyle=g;x.fillRect(0,0,W,H);
    {const lt=lightBg($('bgc').value),cl=lt?'0,0,0':'255,255,255';softGrid(x,0,H,.06,cl,'none');decorBottom(640,1235,lt?.7:1,cl)}
    drawLogo(75,100,chip,tc);
-   bar(W/2,818,130,7);
+   bar(acx(130,70),818,130,7);
    headline(845,1150,W-140,70,false,null);
-   x.globalAlpha=.7;x.font='500 26px '+FF();x.fillStyle=tc;x.textAlign='center';x.fillText($('date').value,W/2,1198);x.globalAlpha=1;
+   x.globalAlpha=.7;x.font='500 26px '+FF();x.fillStyle=tc;x.textAlign='left';x.fillText($('date').value,ax(x.measureText($('date').value).width,70),1198);x.globalAlpha=1;
    drawFooter();
   }
  }finally{x=mainX}}
@@ -650,5 +653,6 @@ const upd=()=>{$('vz').textContent=$('mz').value+'%';$('vr').textContent=$('mr')
 $('media').addEventListener('change',e=>{if(e.target.files[0]){dock.classList.add('show');document.body.classList.add('hasdock')}});
 const MSG=["Great design starts with one bold idea. Go make yours.","Small steps every day build something unstoppable.","Your story deserves to be seen. Let's make it shine.","Create something today your future self will be proud of.","Consistency beats talent. Keep showing up and keep creating."];
 $('sp-m').textContent=MSG[Math.floor(Math.random()*MSG.length)];
+document.querySelectorAll('.al').forEach(b=>b.onclick=()=>{$('ta').value=b.dataset.a;document.querySelectorAll('.al').forEach(q=>q.classList.toggle('on',q===b));dirty=true});
 const sp=$('splash');let going=false;const hideSp=()=>{if(going)return;going=true;sp.classList.add('go');setTimeout(()=>sp.classList.add('hide'),650)};sp.onclick=hideSp;setTimeout(hideSp,5000);
 </script></body></html>
